@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Caricamenti Multipli - ERP MallFarm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .demo-section {
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        .feature-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .benefit {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+        .benefit i {
+            margin-right: 10px;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-layer-group"></i> Test Caricamenti Multipli
+        </h1>
+
+        <div class="demo-section">
+            <h2><i class="fas fa-rocket"></i> Nuova Funzionalità: Caricamenti Multipli</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-magic"></i> Cosa fa?</h4>
+                        <p>Permette di aggiungere <strong>più caricamenti contemporaneamente</strong> con un'interfaccia semplice e veloce.</p>
+                        
+                        <h5>✨ Vantaggi:</h5>
+                        <div class="benefit">
+                            <i class="fas fa-clock"></i>
+                            <span><strong>Risparmio di tempo:</strong> Inserisci 10 caricamenti in 30 secondi</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-copy"></i>
+                            <span><strong>Copia automatica:</strong> Applica data/caldaia/tipo legno a tutti</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-calculator"></i>
+                            <span><strong>Calcolo automatico:</strong> Vedi subito il totale fatturato</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-trash"></i>
+                            <span><strong>Rimozione facile:</strong> Elimina righe singole se necessario</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-check-circle"></i>
+                            <span><strong>Validazione intelligente:</strong> Controlli automatici</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-cog"></i> Come funziona?</h4>
+                        <ol>
+                            <li><strong>Apri l'interfaccia:</strong> Clicca "Caricamenti Multipli"</li>
+                            <li><strong>Imposta comuni:</strong> Data, caldaia, tipo legno generali</li>
+                            <li><strong>Personalizza:</strong> Modifica ogni riga se necessario</li>
+                            <li><strong>Aggiungi/Rimuovi:</strong> Cambia il numero di caricamenti</li>
+                            <li><strong>Salva tutto:</strong> Un click per salvare tutti i caricamenti</li>
+                        </ol>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Esempio pratico:</strong><br>
+                            Devi registrare 8 caricamenti dello stesso giorno per la stessa caldaia? 
+                            Imposti la data e caldaia comune, modifichi il numero a 8, e salvi tutto in 10 secondi!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-chart-line"></i> Integrazione Completa</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <i class="fas fa-sync fa-2x text-primary mb-2"></i>
+                                    <h6>Aggiornamento Automatico</h6>
+                                    <small>Header contabili si aggiornano automaticamente</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <i class="fas fa-euro-sign fa-2x text-success mb-2"></i>
+                                    <h6>Calcolo Ricavi</h6>
+                                    <small>€15 per caricamento, calcolo automatico del totale</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <i class="fas fa-save fa-2x text-warning mb-2"></i>
+                                    <h6>Salvataggio Sicuro</h6>
+                                    <small>Tutti i dati vengono salvati correttamente</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3><i class="fas fa-play-circle"></i> Prova la Funzionalità</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-success btn-lg w-100 mb-3" onclick="openMainApp()">
+                        <i class="fas fa-external-link-alt"></i> Apri ERP MallFarm
+                    </button>
+                    <small class="text-muted d-block text-center">
+                        Vai su Caldaie → Caricamenti → "Caricamenti Multipli"
+                    </small>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-info btn-lg w-100 mb-3" onclick="showInstructions()">
+                        <i class="fas fa-question-circle"></i> Istruzioni Dettagliate
+                    </button>
+                    <small class="text-muted d-block text-center">
+                        Guida passo-passo per l'uso
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div id="instructionsModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-book"></i> Istruzioni Caricamenti Multipli
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="accordion" id="instructionsAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1">
+                                        <i class="fas fa-play me-2"></i> Passo 1: Aprire la Funzionalità
+                                    </button>
+                                </h2>
+                                <div id="step1" class="accordion-collapse collapse show">
+                                    <div class="accordion-body">
+                                        <ol>
+                                            <li>Apri l'ERP MallFarm</li>
+                                            <li>Vai nella sezione <strong>"Caldaie"</strong></li>
+                                            <li>Clicca sul tab <strong>"Caricamenti"</strong></li>
+                                            <li>Clicca il pulsante verde <strong>"Caricamenti Multipli"</strong></li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2">
+                                        <i class="fas fa-cog me-2"></i> Passo 2: Impostazioni Comuni
+                                    </button>
+                                </h2>
+                                <div id="step2" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <h6>Imposta i valori che vuoi applicare a tutti i caricamenti:</h6>
+                                        <ul>
+                                            <li><strong>Data Generale:</strong> La data che verrà applicata a tutti (modificabile per singolo caricamento)</li>
+                                            <li><strong>Caldaia Generale:</strong> La caldaia da utilizzare per tutti</li>
+                                            <li><strong>Tipo Legno Generale:</strong> Pellet, Cippato, Legna, o Bricchetti</li>
+                                            <li><strong>Numero Caricamenti:</strong> Quante righe creare (da 1 a 20)</li>
+                                        </ul>
+                                        <div class="alert alert-tip">
+                                            <i class="fas fa-lightbulb"></i> <strong>Tip:</strong> Ogni volta che cambi un valore generale, si applica automaticamente a tutte le righe!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3">
+                                        <i class="fas fa-edit me-2"></i> Passo 3: Personalizzazione
+                                    </button>
+                                </h2>
+                                <div id="step3" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <h6>Personalizza ogni singolo caricamento:</h6>
+                                        <ul>
+                                            <li><strong>Data:</strong> Modifica per caricamenti in giorni diversi</li>
+                                            <li><strong>Caldaia:</strong> Cambia caldaia per specifici caricamenti</li>
+                                            <li><strong>Quantità:</strong> Inserisci i kg di legno caricati</li>
+                                            <li><strong>Stato:</strong> Programmato, In Corso, o Completato</li>
+                                            <li><strong>Rimuovi:</strong> Usa il pulsante rosso per eliminare righe non necessarie</li>
+                                        </ul>
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-euro-sign"></i> <strong>Importo:</strong> Sempre €15 per caricamento (fisso e automatico)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step4">
+                                        <i class="fas fa-save me-2"></i> Passo 4: Salvataggio
+                                    </button>
+                                </h2>
+                                <div id="step4" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <h6>Controlla e salva:</h6>
+                                        <ol>
+                                            <li><strong>Verifica il riepilogo:</strong> Controlla caricamenti totali e importo</li>
+                                            <li><strong>Controlla le righe:</strong> Assicurati che tutto sia corretto</li>
+                                            <li><strong>Clicca "Salva Tutti i Caricamenti":</strong> Un click per salvare tutto</li>
+                                            <li><strong>Verifica l'aggiornamento:</strong> Le header contabili si aggiornano automaticamente</li>
+                                        </ol>
+                                        <div class="alert alert-success">
+                                            <i class="fas fa-check-circle"></i> <strong>Successo!</strong> Tutti i caricamenti sono stati aggiunti e la contabilità aggiornata.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openMainApp() {
+            window.open('index.html', '_blank');
+        }
+
+        function showInstructions() {
+            const modal = new bootstrap.Modal(document.getElementById('instructionsModal'));
+            modal.show();
+        }
+    </script>
+</body>
+</html>

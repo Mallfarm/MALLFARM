@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Contabilità - Test ERP</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #007bff; }
+        .test-item { margin: 10px 0; padding: 10px; background: #f8f9fa; border-left: 4px solid #007bff; }
+        .code { background: #f1f1f1; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Fix Pagina Contabilità - ERP MallFarm</h1>
+        
+        <h2 class="success">✅ Problema Risolto:</h2>
+        <div class="test-item">
+            <strong>Problema:</strong> La pagina Contabilità dal menu principale risultava vuota<br>
+            <strong>Causa:</strong> Mancava il div <code>accounting-page</code> nell'HTML e problemi di timing DOM<br>
+            <strong>Soluzione:</strong> Aggiunto il div mancante e controlli di sicurezza nelle funzioni
+        </div>
+
+        <h2 class="info">🔧 Modifiche Applicate:</h2>
+        <ol>
+            <li><strong>Div mancante:</strong> Aggiunto <code>&lt;div id="accounting-page" class="page-section"&gt;&lt;/div&gt;</code> nell'HTML</li>
+            <li><strong>Timing DOM:</strong> Aggiunto <code>setTimeout()</code> per attendere l'aggiornamento del DOM</li>
+            <li><strong>Controlli di sicurezza:</strong> Verifiche degli elementi DOM in tutte le funzioni di rendering</li>
+            <li><strong>Compatibilità dati:</strong> Fix per campi date diversi (<code>date</code> vs <code>datetime</code>)</li>
+        </ol>
+
+        <h2 class="success">🧪 Test da Eseguire:</h2>
+        <div class="test-item">
+            <strong>1. Apri l'applicazione</strong> → <a href="index.html" target="_blank">index.html</a>
+        </div>
+        <div class="test-item">
+            <strong>2. Clicca su "Contabilità" nel menu</strong> → Dovrebbe caricare la pagina completa
+        </div>
+        <div class="test-item">
+            <strong>3. Verifica le 4 card statistiche</strong> → Dovrebbero mostrare i totali corretti
+        </div>
+        <div class="test-item">
+            <strong>4. Controlla le tabelle</strong> → Ricavi da caricamenti e costi sostenuti
+        </div>
+        <div class="test-item">
+            <strong>5. Testa "Registra Costo"</strong> → Dovrebbe aprire il modal correttamente
+        </div>
+        <div class="test-item">
+            <strong>6. Verifica i calcoli</strong> → Profitto netto = Ricavi - Costi
+        </div>
+
+        <h2 class="info">📋 Cosa Dovrebbe Funzionare Ora:</h2>
+        <ul>
+            <li><strong>Menu Contabilità:</strong> Carica una pagina completa con dashboard</li>
+            <li><strong>Ricavi automatici:</strong> €15 per ogni caricamento caldaia + totale ordini completati</li>
+            <li><strong>Gestione costi:</strong> Registrazione e visualizzazione costi con categorie</li>
+            <li><strong>Analisi mensile:</strong> Grafici e filtri per mese</li>
+            <li><strong>Calcoli automatici:</strong> Profitto netto e margine percentuale</li>
+            <li><strong>Export report:</strong> Funzione di esportazione dati contabili</li>
+        </ul>
+
+        <h2 class="info">📝 Note Tecniche:</h2>
+        <ul>
+            <li>Tutte le funzioni di rendering ora verificano l'esistenza degli elementi DOM</li>
+            <li>Aggiunto supporto per campi date sia <code>date</code> che <code>datetime</code></li>
+            <li>Il setTimeout di 10ms permette al DOM di aggiornarsi prima del rendering</li>
+            <li>La pagina calcola ricavi da: caricamenti caldaie + ordini completati</li>
+        </ul>
+
+        <hr>
+        <p><strong>🚀 La pagina Contabilità dovrebbe ora caricare correttamente!</strong></p>
+        <p><a href="index.html" style="background: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">Testa la Contabilità</a></p>
+    </div>
+</body>
+</html>

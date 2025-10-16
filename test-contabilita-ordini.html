@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Contabilità Ordini - Test ERP</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #007bff; }
+        .test-item { margin: 10px 0; padding: 10px; background: #f8f9fa; border-left: 4px solid #007bff; }
+        .code { background: #f1f1f1; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ Contabilità con Ordini Consegnati - ERP MallFarm</h1>
+        
+        <h2 class="success">🎯 Aggiornamento Completato:</h2>
+        <div class="test-item">
+            <strong>Richiesta:</strong> "Nella contabilità deve farmi la somma anche degli ordini consegnati"<br>
+            <strong>Implementato:</strong> Sistema completo di contabilità che include sia caricamenti caldaie che ordini consegnati<br>
+        </div>
+
+        <h2 class="info">🔧 Nuove Funzionalità Implementate:</h2>
+        <ol>
+            <li><strong>Card separate per ricavi:</strong>
+                <ul>
+                    <li>🔥 <strong>Caricamenti:</strong> €15 per ogni caricamento caldaia</li>
+                    <li>🛒 <strong>Ordini:</strong> Totale degli ordini con status "delivered" o "completato"</li>
+                    <li>📈 <strong>Ricavi Totali:</strong> Somma di caricamenti + ordini</li>
+                </ul>
+            </li>
+            <li><strong>Tabelle separate:</strong>
+                <ul>
+                    <li>Tabella caricamenti caldaie (con codice caldaia e quantità)</li>
+                    <li>Tabella ordini consegnati (con cliente e totale)</li>
+                    <li>Tabella costi sostenuti</li>
+                </ul>
+            </li>
+            <li><strong>Report export aggiornato:</strong>
+                <ul>
+                    <li>Sezione separata per ricavi da caricamenti</li>
+                    <li>Sezione separata per ricavi da ordini consegnati</li>
+                    <li>Riepilogo completo con tutti i totali</li>
+                </ul>
+            </li>
+            <li><strong>Analisi mensile migliorata:</strong>
+                <ul>
+                    <li>Include sia caricamenti che ordini consegnati nel calcolo mensile</li>
+                    <li>Distinzione visiva tra le due tipologie di ricavo</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h2 class="success">🧪 Test da Eseguire:</h2>
+        <div class="test-item">
+            <strong>1. Verifica Ordini:</strong> 
+            <ul>
+                <li>Vai a "Ordini" e crea alcuni ordini</li>
+                <li>Cambia lo status di alcuni in "Consegnato"</li>
+                <li>Vai alla Contabilità e verifica che appaiano nella card "Ordini"</li>
+            </ul>
+        </div>
+        <div class="test-item">
+            <strong>2. Verifica Caricamenti:</strong>
+            <ul>
+                <li>Vai a "Caldaie" e aggiungi alcuni caricamenti</li>
+                <li>Vai alla Contabilità e verifica che appaiano nella card "Caricamenti" a €15 ciascuno</li>
+            </ul>
+        </div>
+        <div class="test-item">
+            <strong>3. Verifica Totali:</strong>
+            <ul>
+                <li>La card "Ricavi Totali" deve essere la somma di Caricamenti + Ordini</li>
+                <li>Il "Profitto Netto" deve essere Ricavi Totali - Costi</li>
+            </ul>
+        </div>
+        <div class="test-item">
+            <strong>4. Verifica Tabelle:</strong>
+            <ul>
+                <li>Tabella "Ricavi da Caricamenti Caldaie" deve mostrare i caricamenti</li>
+                <li>Tabella "Ricavi da Ordini Consegnati" deve mostrare solo ordini con status "delivered"</li>
+            </ul>
+        </div>
+        <div class="test-item">
+            <strong>5. Test Export:</strong>
+            <ul>
+                <li>Clicca "Esporta Report" e verifica che il file CSV includa entrambe le sezioni</li>
+                <li>Il file deve avere sezioni separate per caricamenti e ordini</li>
+            </ul>
+        </div>
+
+        <h2 class="info">📊 Nuova Struttura Contabilità:</h2>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+            <strong>Dashboard Top (5 Card):</strong><br>
+            🔥 Caricamenti | 🛒 Ordini | 📈 Ricavi Totali | 💸 Costi | 💰 Profitto | 📊 Margine
+        </div>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+            <strong>Tabelle Dettagliate (3 Colonne):</strong><br>
+            📋 Caricamenti Caldaie | 📋 Ordini Consegnati | 📋 Costi Sostenuti
+        </div>
+
+        <h2 class="info">📝 Status Ordini Riconosciuti:</h2>
+        <ul>
+            <li><code>delivered</code> - Ordini con status "Consegnato" (dal sistema ordini)</li>
+            <li><code>completato</code> - Ordini con status "Completato" (fallback compatibilità)</li>
+        </ul>
+
+        <hr>
+        <p><strong>🚀 La contabilità ora include automaticamente tutti gli ordini consegnati!</strong></p>
+        <p><a href="index.html" style="background: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">Testa la Nuova Contabilità</a></p>
+    </div>
+</body>
+</html>

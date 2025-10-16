@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP MallFarm - Sistema Gestione Legna</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2d5a27;
+            --secondary-color: #4a7c59;
+            --accent-color: #8bc34a;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 15px;
+        }
+
+        .stat-card.success {
+            background: linear-gradient(135deg, var(--success-color), #20c997);
+        }
+
+        .stat-card.warning {
+            background: linear-gradient(135deg, var(--warning-color), #fd7e14);
+        }
+
+        .stat-card.info {
+            background: linear-gradient(135deg, var(--info-color), #6610f2);
+        }
+
+        .stat-card.danger {
+            background: linear-gradient(135deg, var(--danger-color), #e83e8c);
+        }
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.5em 0.75em;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(45, 90, 39, 0.25);
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+
+        .mobile-view {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-view {
+                display: block;
+            }
+            .desktop-view {
+                display: none;
+            }
+            
+            .card {
+                margin-bottom: 1rem;
+            }
+            
+            .table-responsive {
+                font-size: 0.875rem;
+            }
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .quick-action-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action-card:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .stock-low {
+            background-color: #fff3cd;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .stock-critical {
+            background-color: #f8d7da;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .loading {
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .avatar-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .alert-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-group-sm .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .card-title {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .text-primary { color: var(--primary-color) !important; }
+        .text-success { color: var(--success-color) !important; }
+        .text-warning { color: var(--warning-color) !important; }
+        .text-danger { color: var(--danger-color) !important; }
+        .text-info { color: var(--info-color) !important; }
+
+        .bg-primary { background-color: var(--primary-color) !important; }
+        .bg-success { background-color: var(--success-color) !important; }
+        .bg-warning { background-color: var(--warning-color) !important; }
+        .bg-danger { background-color: var(--danger-color) !important; }
+        .bg-info { background-color: var(--info-color) !important; }
+
+        .border-primary { border-color: var(--primary-color) !important; }
+        .border-success { border-color: var(--success-color) !important; }
+        .border-warning { border-color: var(--warning-color) !important; }
+        .border-danger { border-color: var(--danger-color) !important; }
+        .border-info { border-color: var(--info-color) !important; }
+
+        /* Bulk Load Modal Styles */
+        .modal-xl {
+            max-width: 95%;
+        }
+        
+        .bulk-load-table {
+            font-size: 0.85rem;
+        }
+        
+        .bulk-load-table .form-control,
+        .bulk-load-table .form-select {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .bulk-summary-card {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+            border-radius: 8px;
+        }
+        
+        .bulk-summary-card h5 {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .bulk-settings-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+        
+        .bulk-row-highlight:hover {
+            background-color: #f8f9fa;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-xl {
+                max-width: 98%;
+                margin: 0.5rem;
+            }
+            
+            .bulk-load-table {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showPage('dashboard')">
+                <i class="fas fa-tree"></i> ERP MallFarm
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('dashboard')">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-users"></i> Anagrafica
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="showPage('customers')">
+                                <i class="fas fa-user"></i> Clienti
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('suppliers')">
+                                <i class="fas fa-truck"></i> Fornitori
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('products')">
+                                <i class="fas fa-boxes"></i> Prodotti
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('orders')">
+                            <i class="fas fa-file-invoice"></i> Ordini
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('inventory')">
+                            <i class="fas fa-warehouse"></i> Magazzino
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('boiler')">
+                            <i class="fas fa-fire"></i> Caldaie
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('accounting')">
+                            <i class="fas fa-calculator"></i> Contabilità
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> Utente
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="exportData()">
+                                <i class="fas fa-download"></i> Esporta Dati
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="importData()">
+                                <i class="fas fa-upload"></i> Importa Dati
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="clearAllData()">
+                                <i class="fas fa-trash"></i> Reset Dati
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Loading Spinner -->
+        <div id="loading" class="loading text-center">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Caricamento...</span>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page-section active">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                    <p class="text-muted">Panoramica generale del sistema</p>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card stat-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-2x mb-2"></i>
+                            <h3 id="total-customers">0</h3>
+                            <p class="mb-0">Clienti</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card stat-card success">
+                        <div class="card-body text-center">
+                            <i class="fas fa-file-invoice fa-2x mb-2"></i>
+                            <h3 id="total-orders">0</h3>
+                            <p class="mb-0">Ordini</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card stat-card warning">
+                        <div class="card-body text-center">
+                            <i class="fas fa-boxes fa-2x mb-2"></i>
+                            <h3 id="total-products">0</h3>
+                            <p class="mb-0">Prodotti</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card stat-card info">
+                        <div class="card-body text-center">
+                            <i class="fas fa-fire fa-2x mb-2"></i>
+                            <h3 id="total-boiler-loads">0</h3>
+                            <p class="mb-0">Carichi Caldaia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions and Recent Activity -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-bolt"></i> Azioni Rapide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <div class="card quick-action-card text-center p-3" onclick="showPage('orders')">
+                                        <i class="fas fa-plus fa-2x mb-2 text-primary"></i>
+                                        <p class="mb-0 small">Nuovo Ordine</p>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="card quick-action-card text-center p-3" onclick="showPage('inventory')">
+                                        <i class="fas fa-warehouse fa-2x mb-2 text-success"></i>
+                                        <p class="mb-0 small">Movimento Stock</p>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="card quick-action-card text-center p-3" onclick="showPage('customers')">
+                                        <i class="fas fa-user-plus fa-2x mb-2 text-info"></i>
+                                        <p class="mb-0 small">Nuovo Cliente</p>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="card quick-action-card text-center p-3" onclick="showPage('boiler')">
+                                        <i class="fas fa-fire fa-2x mb-2 text-warning"></i>
+                                        <p class="mb-0 small">Carico Caldaia</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-line"></i> Stock Prodotti</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="stock-overview">
+                                <p class="text-muted text-center">Nessun prodotto in magazzino</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Include all other page sections here -->
+        <div id="customers-page" class="page-section"></div>
+        <div id="suppliers-page" class="page-section"></div>
+        <div id="products-page" class="page-section"></div>
+        <div id="orders-page" class="page-section"></div>
+        <div id="inventory-page" class="page-section"></div>
+        <div id="boiler-page" class="page-section"></div>
+        <div id="accounting-page" class="page-section"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Global App State
+        class ERPMallFarm {
+            constructor() {
+                this.currentPage = 'dashboard';
+                this.data = {
+                    customers: this.loadData('customers') || [],
+                    suppliers: this.loadData('suppliers') || [],
+                    products: this.loadData('products') || [],
+                    orders: this.loadData('orders') || [],
+                    inventory: this.loadData('inventory') || [],
+                    boilers: this.loadData('boilers') || [],
+                    boilerLoads: this.loadData('boilerLoads') || [],
+                    boilerCosts: this.loadData('boilerCosts') || [],
+                    productCategories: this.loadData('productCategories') || [],
+                    unitsOfMeasure: this.loadData('unitsOfMeasure') || []
+                };
+                this.init();
+            }
+
+            init() {
+                this.initializeDefaultData();
+                this.updateDashboard();
+                this.setupEventListeners();
+            }
+
+            initializeDefaultData() {
+                // Initialize with demo data if empty
+                if (this.data.customers.length === 0) {
+                    this.data.customers = [
+                        {
+                            id: this.generateId(),
+                            name: 'Mario Rossi',
+                            email: 'mario.rossi@email.com',
+                            phone: '333-1234567',
+                            address: 'Via Roma 123, Milano',
+                            notes: 'Cliente storico',
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: this.generateId(),
+                            name: 'Azienda Agricola Verdi',
+                            email: 'info@agricolaverdi.com',
+                            phone: '0123-456789',
+                            address: 'Strada Provinciale 45, Torino',
+                            notes: 'Ordini stagionali',
+                            createdAt: new Date().toISOString()
+                        }
+                    ];
+                    this.saveData('customers', this.data.customers);
+                }
+
+                if (this.data.suppliers.length === 0) {
+                    this.data.suppliers = [
+                        {
+                            id: this.generateId(),
+                            name: 'Boscaioli del Nord',
+                            email: 'info@boscaioli.com',
+                            phone: '0321-987654',
+                            address: 'Via Bosco 88, Biella',
+                            notes: 'Fornitore di legna da ardere',
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: this.generateId(),
+                            name: 'Pellet Premium SRL',
+                            email: 'vendite@pelletpremium.it',
+                            phone: '011-5551234',
+                            address: 'Zona Industriale 12, Cuneo',
+                            notes: 'Specializzati in pellet di alta qualità',
+                            createdAt: new Date().toISOString()
+                        }
+                    ];
+                    this.saveData('suppliers', this.data.suppliers);
+                }
+
+                if (this.data.products.length === 0) {
+                    this.data.products = [
+                        {
+                            id: this.generateId(),
+                            name: 'Legna Faggio',
+                            category: 'legna_da_ardere',
+                            unit: 'quintale',
+                            price: 15.50,
+                            stock: 120,
+                            minStock: 20,
+                            description: 'Legna di faggio stagionata 2 anni',
+                            isActive: true,
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: this.generateId(),
+                            name: 'Pellet Premium',
+                            category: 'pellet',
+                            unit: 'sacco_15kg',
+                            price: 5.20,
+                            stock: 85,
+                            minStock: 30,
+                            description: 'Pellet di abete certificato A1',
+                            isActive: true,
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: this.generateId(),
+                            name: 'Cippato',
+                            category: 'cippato',
+                            unit: 'metro_cubo',
+                            price: 35.00,
+                            stock: 8,
+                            minStock: 5,
+                            description: 'Cippato di pino per caldaie',
+                            isActive: true,
+                            createdAt: new Date().toISOString()
+                        }
+                    ];
+                    this.saveData('products', this.data.products);
+                }
+            }
+
+            loadData(key) {
+                try {
+                    const data = localStorage.getItem(`erp_mallfarm_${key}`);
+                    return data ? JSON.parse(data) : null;
+                } catch (error) {
+                    console.error(`Error loading ${key}:`, error);
+                    return null;
+                }
+            }
+
+            saveData(key, data) {
+                if (key && data !== undefined) {
+                    // Save specific data
+                    try {
+                        localStorage.setItem(`erp_mallfarm_${key}`, JSON.stringify(data));
+                    } catch (error) {
+                        console.error(`Error saving ${key}:`, error);
+                        this.showToast('Errore nel salvataggio dei dati', 'danger');
+                    }
+                } else {
+                    // Save all data
+                    try {
+                        Object.keys(this.data).forEach(key => {
+                            localStorage.setItem(`erp_mallfarm_${key}`, JSON.stringify(this.data[key]));
+                        });
+                    } catch (error) {
+                        console.error('Error saving data:', error);
+                        this.showToast('Errore nel salvataggio dei dati', 'danger');
+                    }
+                }
+            }
+
+            generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+
+            showToast(message, type = 'info') {
+                const toastContainer = document.getElementById('toastContainer');
+                const toastId = 'toast-' + Date.now();
+                
+                const toast = document.createElement('div');
+                toast.className = `toast align-items-center text-white bg-${type} border-0`;
+                toast.id = toastId;
+                toast.setAttribute('role', 'alert');
+                toast.innerHTML = `
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                `;
+                
+                toastContainer.appendChild(toast);
+                const bsToast = new bootstrap.Toast(toast);
+                bsToast.show();
+                
+                // Remove after hidden
+                toast.addEventListener('hidden.bs.toast', () => {
+                    toastContainer.removeChild(toast);
+                });
+            }
+
+            setupEventListeners() {
+                // Close navbar on mobile when clicking links
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('dropdown-item') || e.target.classList.contains('nav-link')) {
+                        const navbarCollapse = document.querySelector('.navbar-collapse');
+                        if (navbarCollapse.classList.contains('show')) {
+                            const navbarToggler = document.querySelector('.navbar-toggler');
+                            navbarToggler.click();
+                        }
+                    }
+                });
+            }
+
+            updateDashboard() {
+                document.getElementById('total-customers').textContent = this.data.customers.length;
+                document.getElementById('total-orders').textContent = this.data.orders.length;
+                document.getElementById('total-products').textContent = this.data.products.length;
+                document.getElementById('total-boiler-loads').textContent = this.data.boilerLoads.length;
+                
+                this.updateStockOverview();
+            }
+
+            updateStockOverview() {
+                const stockOverview = document.getElementById('stock-overview');
+                if (this.data.products.length === 0) {
+                    stockOverview.innerHTML = '<p class="text-muted text-center">Nessun prodotto in magazzino</p>';
+                    return;
+                }
+
+                let html = '';
+                this.data.products.forEach(product => {
+                    const stockLevel = product.stock <= product.minStock ? 'critical' : 
+                                     product.stock <= product.minStock * 2 ? 'low' : 'normal';
+                    
+                    const stockClass = stockLevel === 'critical' ? 'stock-critical' : 
+                                      stockLevel === 'low' ? 'stock-low' : '';
+                    
+                    html += `
+                        <div class="row mb-2 p-2 rounded ${stockClass}">
+                            <div class="col-8">
+                                <strong>${product.name}</strong>
+                                <small class="text-muted d-block">${product.unit}</small>
+                            </div>
+                            <div class="col-4 text-end">
+                                <span class="badge ${stockLevel === 'critical' ? 'bg-danger' : stockLevel === 'low' ? 'bg-warning' : 'bg-success'}">
+                                    ${product.stock}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                stockOverview.innerHTML = html;
+            }
+        }
+
+        // Page Navigation
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageName + '-page');
+            if (targetPage) {
+                targetPage.classList.add('active');
+                app.currentPage = pageName;
+                
+                // Load page content
+                loadPageContent(pageName);
+            }
+        }
+
+        function loadPageContent(pageName) {
+            const targetPage = document.getElementById(pageName + '-page');
+            
+            switch(pageName) {
+                case 'dashboard':
+                    app.updateDashboard();
+                    break;
+                case 'customers':
+                    loadCustomersPage(targetPage);
+                    break;
+                case 'suppliers':
+                    loadSuppliersPage(targetPage);
+                    break;
+                case 'products':
+                    loadProductsPage(targetPage);
+                    break;
+                case 'orders':
+                    loadOrdersPage(targetPage);
+                    break;
+                case 'inventory':
+                    loadInventoryPage(targetPage);
+                    break;
+                case 'boiler':
+                    loadBoilerPage(targetPage);
+                    break;
+                case 'accounting':
+                    loadAccountingPage(targetPage);
+                    break;
+            }
+        }
+
+        // Initialize App
+        let app;
+        document.addEventListener('DOMContentLoaded', function() {
+            app = new ERPMallFarm();
+        });
+
+        // Data Management Functions
+        function exportData() {
+            const allData = {
+                customers: app.data.customers,
+                suppliers: app.data.suppliers,
+                products: app.data.products,
+                orders: app.data.orders,
+                inventory: app.data.inventory,
+                boilerLoads: app.data.boilerLoads,
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(allData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `erp-mallfarm-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            app.showToast('Dati esportati con successo', 'success');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        
+                        if (confirm('Sei sicuro di voler importare i dati? Questo sovrascriverà tutti i dati esistenti.')) {
+                            app.data.customers = importedData.customers || [];
+                            app.data.suppliers = importedData.suppliers || [];
+                            app.data.products = importedData.products || [];
+                            app.data.orders = importedData.orders || [];
+                            app.data.inventory = importedData.inventory || [];
+                            app.data.boilerLoads = importedData.boilerLoads || [];
+                            app.data.productCategories = importedData.productCategories || [];
+                            app.data.unitsOfMeasure = importedData.unitsOfMeasure || [];
+                            
+                            // Save to localStorage
+                            Object.keys(app.data).forEach(key => {
+                                app.saveData(key, app.data[key]);
+                            });
+                            
+                            app.updateDashboard();
+                            app.showToast('Dati importati con successo', 'success');
+                            
+                            // Reload current page
+                            loadPageContent(app.currentPage);
+                        }
+                    } catch (error) {
+                        app.showToast('Errore durante l\'importazione del file', 'danger');
+                        console.error('Import error:', error);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+
+        function clearAllData() {
+            if (confirm('Sei sicuro di voler cancellare tutti i dati? Questa azione non può essere annullata.')) {
+                if (confirm('ATTENZIONE: Tutti i clienti, ordini, prodotti e movimenti saranno cancellati definitivamente. Continuare?')) {
+                    // Clear localStorage
+                    Object.keys(app.data).forEach(key => {
+                        localStorage.removeItem(`erp_mallfarm_${key}`);
+                        app.data[key] = [];
+                    });
+                    
+                    // Reinitialize with default data
+                    app.initializeDefaultData();
+                    app.updateDashboard();
+                    app.showToast('Tutti i dati sono stati cancellati', 'warning');
+                    
+                    // Reload current page
+                    loadPageContent(app.currentPage);
+                }
+            }
+        }
+    </script>
+
+    <!-- Include page-specific JavaScript -->
+    <script src="js/customers.js"></script>
+    <script src="js/suppliers.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/boiler.js"></script>
+    <script src="js/accounting.js"></script>
+</body>
+</html>

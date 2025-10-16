@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Funzionalità Caricamenti - ERP MallFarm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .success-card {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .test-status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .status-pass { background: #d4edda; color: #155724; }
+        .status-fail { background: #f8d7da; color: #721c24; }
+        .status-info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="success-card">
+                    <h1><i class="fas fa-check-circle"></i> Errore Risolto!</h1>
+                    <p class="lead">Il problema con <code>app.showNotification</code> è stato corretto</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5><i class="fas fa-bug"></i> Problema Risolto</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="test-status status-fail">
+                            <strong>PRIMA:</strong> <code>app.showNotification is not a function</code>
+                        </div>
+                        <div class="test-status status-pass">
+                            <strong>DOPO:</strong> <code>app.showToast</code> funziona correttamente
+                        </div>
+                        <h6>Correzioni applicate:</h6>
+                        <ul>
+                            <li>✅ Sostituito <code>showNotification</code> con <code>showToast</code></li>
+                            <li>✅ Cambiato parametro <code>'error'</code> in <code>'danger'</code></li>
+                            <li>✅ Mantenuto parametro <code>'success'</code></li>
+                            <li>✅ Tutte le 7 occorrenze corrette</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5><i class="fas fa-play-circle"></i> Test Ora</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>La funzionalità <strong>Caricamenti Multipli</strong> ora dovrebbe funzionare perfettamente:</p>
+                        
+                        <button class="btn btn-success btn-lg w-100 mb-3" onclick="openApp()">
+                            <i class="fas fa-external-link-alt"></i> Apri ERP MallFarm
+                        </button>
+                        
+                        <div class="test-status status-info">
+                            <strong>Come testare:</strong><br>
+                            1. Vai su <strong>Caldaie</strong><br>
+                            2. Tab <strong>Caricamenti</strong><br>
+                            3. Clicca <strong>"Caricamenti Multipli"</strong><br>
+                            4. Compila il modello<br>
+                            5. Imposta quantità (es. 3)<br>
+                            6. Clicca <strong>"Crea Tutti i Caricamenti"</strong>
+                        </div>
+                        
+                        <p><strong>Notifiche attese:</strong></p>
+                        <ul>
+                            <li>🔴 Errori: Toast rosso con messaggio</li>
+                            <li>🟢 Successo: Toast verde con conferma</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5><i class="fas fa-list-check"></i> Funzionalità Aggiornate</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6>📝 Salvare Caldaia</h6>
+                                <p>Notifica: <code>showToast</code></p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>🚛 Salvare Caricamento</h6>
+                                <p>Notifica: <code>showToast</code></p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>🗑️ Eliminare Caldaia</h6>
+                                <p>Notifica: <code>showToast</code></p>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>⚡ Caricamenti Multipli</h6>
+                                <p>Notifica: <code>showToast</code></p>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-success mt-3">
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Tutte le funzioni ora utilizzano la corretta API di notifica dell'app!</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h5><i class="fas fa-info-circle"></i> Dettagli Tecnici</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Mapping delle funzioni:</h6>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Vecchia Chiamata</th>
+                                    <th>Nuova Chiamata</th>
+                                    <th>Tipo Bootstrap</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>app.showNotification(msg, 'error')</code></td>
+                                    <td><code>app.showToast(msg, 'danger')</code></td>
+                                    <td>Toast rosso</td>
+                                </tr>
+                                <tr>
+                                    <td><code>app.showNotification(msg, 'success')</code></td>
+                                    <td><code>app.showToast(msg, 'success')</code></td>
+                                    <td>Toast verde</td>
+                                </tr>
+                                <tr>
+                                    <td><code>app.showNotification(msg, 'warning')</code></td>
+                                    <td><code>app.showToast(msg, 'warning')</code></td>
+                                    <td>Toast giallo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openApp() {
+            window.open('index.html', '_blank');
+        }
+    </script>
+</body>
+</html>

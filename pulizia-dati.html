@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulizia Dati - ERP MallFarm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .console-output {
+            background-color: #000;
+            color: #00ff00;
+            font-family: monospace;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-tools"></i> Pulizia Dati ERP MallFarm
+        </h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🔧 Strumenti di Pulizia</h5>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-primary mb-2 w-100" onclick="analyzeData()">
+                            📊 Analizza Dati
+                        </button>
+                        <button class="btn btn-warning mb-2 w-100" onclick="cleanBoilerLoads()">
+                            🧹 Pulisci Caricamenti
+                        </button>
+                        <button class="btn btn-success mb-2 w-100" onclick="validateData()">
+                            ✅ Valida Tutti i Dati
+                        </button>
+                        <button class="btn btn-danger mb-2 w-100" onclick="resetData()">
+                            🗑️ Reset Completo
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>📋 Console Output</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="console-output" class="console-output">
+                            Avvia un'operazione per vedere i risultati...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = {
+            data: {
+                boilers: [],
+                boilerLoads: [],
+                customers: [],
+                orders: [],
+                costs: []
+            },
+            saveData: function() {
+                localStorage.setItem('erpMallFarmData', JSON.stringify(this.data));
+                return true;
+            },
+            loadData: function() {
+                const stored = localStorage.getItem('erpMallFarmData');
+                if (stored) {
+                    this.data = JSON.parse(stored);
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        function log(message) {
+            const output = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            output.textContent += `[${timestamp}] ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('console-output').textContent = '';
+        }
+
+        function analyzeData() {
+            clearLog();
+            app.loadData();
+            
+            log('=== ANALISI DATI ERP MALLFARM ===');
+            log(`Caldaie: ${app.data.boilers?.length || 0}`);
+            log(`Caricamenti: ${app.data.boilerLoads?.length || 0}`);
+            log(`Clienti: ${app.data.customers?.length || 0}`);
+            log(`Ordini: ${app.data.orders?.length || 0}`);
+            log(`Costi: ${app.data.costs?.length || 0}`);
+            
+            if (app.data.boilerLoads) {
+                log('\n=== ANALISI CARICAMENTI ===');
+                let problematicLoads = 0;
+                
+                app.data.boilerLoads.forEach((load, index) => {
+                    const issues = [];
+                    
+                    if (!load.status) issues.push('status mancante');
+                    if (!load.woodType) issues.push('woodType mancante');
+                    if (load.amount === undefined || load.amount === null) issues.push('amount mancante');
+                    if (load.quantity === undefined || load.quantity === null) issues.push('quantity mancante');
+                    
+                    if (issues.length > 0) {
+                        problematicLoads++;
+                        log(`Caricamento ${index + 1} (ID: ${load.id}): ${issues.join(', ')}`);
+                    }
+                });
+                
+                if (problematicLoads === 0) {
+                    log('✅ Tutti i caricamenti sono validi!');
+                } else {
+                    log(`⚠️ Trovati ${problematicLoads} caricamenti con problemi`);
+                }
+            }
+        }
+
+        function cleanBoilerLoads() {
+            clearLog();
+            app.loadData();
+            
+            log('=== PULIZIA CARICAMENTI ===');
+            
+            if (!app.data.boilerLoads) {
+                app.data.boilerLoads = [];
+                log('✅ Array boilerLoads inizializzato');
+            }
+            
+            let fixedCount = 0;
+            
+            app.data.boilerLoads.forEach((load, index) => {
+                let fixed = false;
+                
+                if (!load.status) {
+                    load.status = 'completato';
+                    fixed = true;
+                }
+                
+                if (!load.woodType) {
+                    load.woodType = 'pellet';
+                    fixed = true;
+                }
+                
+                if (load.amount === undefined || load.amount === null) {
+                    load.amount = 15;
+                    fixed = true;
+                }
+                
+                if (load.quantity === undefined || load.quantity === null) {
+                    load.quantity = 0;
+                    fixed = true;
+                }
+                
+                if (!load.notes) {
+                    load.notes = '';
+                    fixed = true;
+                }
+                
+                if (!load.date && load.datetime) {
+                    load.date = load.datetime;
+                    fixed = true;
+                }
+                
+                if (!load.datetime && load.date) {
+                    load.datetime = load.date;
+                    fixed = true;
+                }
+                
+                if (fixed) {
+                    fixedCount++;
+                    log(`Caricamento ${index + 1} riparato`);
+                }
+            });
+            
+            if (fixedCount > 0) {
+                app.saveData();
+                log(`✅ ${fixedCount} caricamenti riparati e salvati!`);
+            } else {
+                log('✅ Nessun caricamento necessitava riparazioni');
+            }
+        }
+
+        function validateData() {
+            clearLog();
+            app.loadData();
+            
+            log('=== VALIDAZIONE COMPLETA ===');
+            
+            // Validate boilerLoads
+            if (app.data.boilerLoads) {
+                const requiredFields = ['id', 'date', 'boilerId', 'status', 'woodType', 'amount', 'quantity'];
+                let validLoads = 0;
+                
+                app.data.boilerLoads.forEach((load, index) => {
+                    const missingFields = requiredFields.filter(field => 
+                        load[field] === undefined || load[field] === null || load[field] === ''
+                    );
+                    
+                    if (missingFields.length === 0) {
+                        validLoads++;
+                    } else {
+                        log(`Caricamento ${index + 1}: campi mancanti - ${missingFields.join(', ')}`);
+                    }
+                });
+                
+                log(`✅ ${validLoads}/${app.data.boilerLoads.length} caricamenti validi`);
+            }
+            
+            // Validate structure
+            const expectedStructure = ['boilers', 'boilerLoads', 'customers', 'orders', 'costs'];
+            expectedStructure.forEach(key => {
+                if (Array.isArray(app.data[key])) {
+                    log(`✅ ${key}: ${app.data[key].length} elementi`);
+                } else {
+                    log(`⚠️ ${key}: non è un array valido`);
+                }
+            });
+        }
+
+        function resetData() {
+            if (confirm('ATTENZIONE: Questa operazione cancellerà TUTTI i dati. Sei sicuro?')) {
+                clearLog();
+                
+                app.data = {
+                    boilers: [],
+                    boilerLoads: [],
+                    customers: [],
+                    orders: [],
+                    costs: []
+                };
+                
+                app.saveData();
+                log('🗑️ TUTTI I DATI SONO STATI CANCELLATI');
+                log('✅ Struttura dati reinizializzata');
+            }
+        }
+
+        // Auto-run analysis on load
+        window.onload = function() {
+            analyzeData();
+        };
+    </script>
+</body>
+</html>

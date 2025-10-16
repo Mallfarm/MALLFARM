@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Caricamenti Multipli Semplificati - ERP MallFarm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .step-number {
+            background: #28a745;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .benefit-item i {
+            color: #28a745;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        .comparison {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .demo-btn {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,184,148,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 mb-4">
+                <i class="fas fa-magic"></i> Caricamenti Multipli Semplificati
+            </h1>
+            <p class="lead mb-4">
+                Una sola configurazione → Centinaia di caricamenti identici in secondi!
+            </p>
+            <p class="h5 mb-0">
+                <i class="fas fa-clock"></i> Da 10 minuti a 30 secondi
+                <span class="mx-3">|</span>
+                <i class="fas fa-mouse-pointer"></i> 5 click invece di 50
+                <span class="mx-3">|</span>
+                <i class="fas fa-check-circle"></i> Zero errori
+            </p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Come Funziona -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4">
+                    <i class="fas fa-cogs"></i> Come Funziona il Nuovo Sistema
+                </h2>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="feature-card text-center">
+                    <div class="step-number mx-auto">1</div>
+                    <h4><i class="fas fa-edit"></i> Configura</h4>
+                    <p>Imposti <strong>UN SOLO</strong> caricamento modello con tutti i dati necessari</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="feature-card text-center">
+                    <div class="step-number mx-auto">2</div>
+                    <h4><i class="fas fa-plus-circle"></i> Moltiplica</h4>
+                    <p>Scegli quante <strong>copie identiche</strong> vuoi creare (da 1 a 50)</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="feature-card text-center">
+                    <div class="step-number mx-auto">3</div>
+                    <h4><i class="fas fa-eye"></i> Anteprima</h4>
+                    <p>Vedi <strong>subito</strong> quanti caricamenti verranno creati e il totale</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="feature-card text-center">
+                    <div class="step-number mx-auto">4</div>
+                    <h4><i class="fas fa-magic"></i> Salva Tutto</h4>
+                    <p><strong>Un click</strong> e tutti i caricamenti sono pronti!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confronto Prima/Dopo -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4">
+                    <i class="fas fa-balance-scale"></i> Prima vs Dopo
+                </h2>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="comparison">
+                    <h4 class="text-center mb-3">
+                        <i class="fas fa-frown text-danger"></i> PRIMA (Metodo Tradizionale)
+                    </h4>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-times text-danger me-2"></i> Per 10 caricamenti = 10 modali da compilare</li>
+                        <li><i class="fas fa-times text-danger me-2"></i> Devi ripetere data/caldaia ogni volta</li>
+                        <li><i class="fas fa-times text-danger me-2"></i> Rischio di errori di digitazione</li>
+                        <li><i class="fas fa-times text-danger me-2"></i> Tempo: <strong>8-10 minuti</strong></li>
+                        <li><i class="fas fa-times text-danger me-2"></i> Click necessari: <strong>~50</strong></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="comparison">
+                    <h4 class="text-center mb-3">
+                        <i class="fas fa-smile text-success"></i> DOPO (Metodo Semplificato)
+                    </h4>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i> Per 10 caricamenti = 1 sola configurazione</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Imposti data/caldaia una volta sola</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Impossibile sbagliare (tutti identici)</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Tempo: <strong>30 secondi</strong></li>
+                        <li><i class="fas fa-check text-success me-2"></i> Click necessari: <strong>5</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vantaggi -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4">
+                    <i class="fas fa-star"></i> Vantaggi Principali
+                </h2>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="benefit-item">
+                    <i class="fas fa-rocket"></i>
+                    <div>
+                        <strong>Velocità Estrema</strong><br>
+                        <small>Crea 20 caricamenti in meno di 1 minuto</small>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <strong>Precisione Assoluta</strong><br>
+                        <small>Tutti i caricamenti sono identici, zero errori</small>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <i class="fas fa-brain"></i>
+                    <div>
+                        <strong>Intelligente</strong><br>
+                        <small>Anteprima in tempo reale del risultato</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="benefit-item">
+                    <i class="fas fa-mouse-pointer"></i>
+                    <div>
+                        <strong>Semplicità d'Uso</strong><br>
+                        <small>Interfaccia intuitiva, nessuna confusione</small>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <i class="fas fa-calculator"></i>
+                    <div>
+                        <strong>Calcolo Automatico</strong><br>
+                        <small>Vedi subito il fatturato totale generato</small>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <i class="fas fa-sync"></i>
+                    <div>
+                        <strong>Integrazione Completa</strong><br>
+                        <small>Aggiorna automaticamente tutte le statistiche</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Esempi Pratici -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4">
+                    <i class="fas fa-lightbulb"></i> Esempi Pratici di Utilizzo
+                </h2>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h5><i class="fas fa-calendar-day"></i> Caricamenti Giornalieri</h5>
+                    <p><strong>Scenario:</strong> Stessa caldaia, 8 caricamenti in un giorno</p>
+                    <ul class="list-unstyled">
+                        <li>✅ Imposti data di oggi</li>
+                        <li>✅ Selezioni la caldaia</li>
+                        <li>✅ Metti quantità: 8</li>
+                        <li>✅ Un click = fatto!</li>
+                    </ul>
+                    <span class="badge bg-success">Tempo: 20 secondi</span>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h5><i class="fas fa-industry"></i> Cliente Industriale</h5>
+                    <p><strong>Scenario:</strong> Cliente con 15 caricamenti settimanali standard</p>
+                    <ul class="list-unstyled">
+                        <li>✅ Imposti dati del cliente</li>
+                        <li>✅ Tipo legno: pellet</li>
+                        <li>✅ Quantità: 15</li>
+                        <li>✅ Salvi tutto insieme</li>
+                    </ul>
+                    <span class="badge bg-primary">Fatturato: €225</span>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h5><i class="fas fa-history"></i> Recupero Dati</h5>
+                    <p><strong>Scenario:</strong> Devi inserire caricamenti di ieri dimenticati</p>
+                    <ul class="list-unstyled">
+                        <li>✅ Cambi la data a ieri</li>
+                        <li>✅ Selezioni caldaia corretta</li>
+                        <li>✅ Inserisci numero totale</li>
+                        <li>✅ Recuperato tutto in un attimo!</li>
+                    </ul>
+                    <span class="badge bg-warning">Recupero istantaneo</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <div class="feature-card bg-light">
+                    <h2><i class="fas fa-play-circle"></i> Prova Subito la Nuova Funzionalità!</h2>
+                    <p class="lead">Apri l'ERP MallFarm e vai su Caldaie → Caricamenti → "Caricamenti Multipli"</p>
+                    
+                    <button class="btn demo-btn text-white btn-lg me-3" onclick="openMainApp()">
+                        <i class="fas fa-external-link-alt"></i> Apri ERP MallFarm
+                    </button>
+                    
+                    <button class="btn btn-outline-primary btn-lg" onclick="showQuickGuide()">
+                        <i class="fas fa-book-open"></i> Guida Rapida
+                    </button>
+                    
+                    <div class="mt-4">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Tip:</strong> Inizia con 2-3 caricamenti per prendere confidenza, poi prova con numeri più grandi!
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Guida Rapida -->
+    <div class="modal fade" id="quickGuideModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-book-open"></i> Guida Rapida - Caricamenti Multipli
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-play"></i> Passo per Passo:</h6>
+                            <ol>
+                                <li><strong>Apri l'app</strong> ERP MallFarm</li>
+                                <li>Vai nella sezione <strong>"Caldaie"</strong></li>
+                                <li>Clicca tab <strong>"Caricamenti"</strong></li>
+                                <li>Clicca <strong>"Caricamenti Multipli"</strong></li>
+                                <li>Compila il <strong>modello unico</strong>:
+                                    <ul>
+                                        <li>Data del caricamento</li>
+                                        <li>Caldaia da caricare</li>
+                                        <li>Tipo di legno</li>
+                                        <li>Quantità per caricamento</li>
+                                        <li>Stato (di solito "Completato")</li>
+                                    </ul>
+                                </li>
+                                <li>Imposta <strong>quante copie</strong> vuoi</li>
+                                <li>Controlla l'<strong>anteprima</strong></li>
+                                <li>Clicca <strong>"Crea Tutti i Caricamenti"</strong></li>
+                            </ol>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-lightbulb"></i> Suggerimenti:</h6>
+                            <div class="alert alert-info">
+                                <strong>Per principianti:</strong><br>
+                                Inizia con 2-3 caricamenti per vedere come funziona
+                            </div>
+                            <div class="alert alert-success">
+                                <strong>Per esperti:</strong><br>
+                                Puoi creare fino a 50 caricamenti alla volta
+                            </div>
+                            <div class="alert alert-warning">
+                                <strong>Attenzione:</strong><br>
+                                Tutti i caricamenti avranno gli stessi dati del modello
+                            </div>
+                            
+                            <h6><i class="fas fa-question-circle"></i> Domande Frequenti:</h6>
+                            <p><strong>Q:</strong> Posso modificare i singoli caricamenti dopo?</p>
+                            <p><strong>A:</strong> Sì, ogni caricamento può essere modificato individualmente</p>
+                            
+                            <p><strong>Q:</strong> Il prezzo è sempre €15?</p>
+                            <p><strong>A:</strong> Sì, è fisso per tutti i caricamenti</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary" onclick="openMainApp()">Vai all'App</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openMainApp() {
+            window.open('index.html', '_blank');
+        }
+
+        function showQuickGuide() {
+            const modal = new bootstrap.Modal(document.getElementById('quickGuideModal'));
+            modal.show();
+        }
+    </script>
+</body>
+</html>

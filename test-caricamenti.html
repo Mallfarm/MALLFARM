@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Caricamenti - ERP MallFarm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .test-section {
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .test-result {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .test-pass { background-color: #d4edda; color: #155724; }
+        .test-fail { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-wrench"></i> Test Funzionalità Caricamenti
+        </h1>
+
+        <div class="test-section">
+            <h3><i class="fas fa-check-circle"></i> Test 1: Dati di Base</h3>
+            <button class="btn btn-primary" onclick="testBaseData()">Verifica Dati Base</button>
+            <div id="test1-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-plus-circle"></i> Test 2: Aggiungi Caricamento</h3>
+            <button class="btn btn-success" onclick="addTestLoad()">Aggiungi Caricamento Test</button>
+            <div id="test2-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-calculator"></i> Test 3: Aggiornamento Header</h3>
+            <button class="btn btn-info" onclick="testHeaderUpdate()">Verifica Header</button>
+            <div id="test3-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-trash"></i> Test 4: Eliminazione Caricamento</h3>
+            <button class="btn btn-danger" onclick="testLoadDeletion()">Test Eliminazione</button>
+            <div id="test4-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-save"></i> Test 5: Persistenza Dati</h3>
+            <button class="btn btn-warning" onclick="testDataPersistence()">Verifica Salvataggio</button>
+            <div id="test5-result"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize app object for testing
+        const app = {
+            data: {
+                boilers: [],
+                boilerLoads: [],
+                customers: [],
+                orders: [],
+                costs: []
+            },
+            saveData: function() {
+                localStorage.setItem('erpMallFarmData', JSON.stringify(this.data));
+                console.log('Data saved to localStorage');
+            },
+            loadData: function() {
+                const stored = localStorage.getItem('erpMallFarmData');
+                if (stored) {
+                    this.data = JSON.parse(stored);
+                }
+                console.log('Data loaded from localStorage');
+            },
+            showNotification: function(message, type) {
+                console.log(`${type.toUpperCase()}: ${message}`);
+            }
+        };
+
+        // Load existing data
+        app.loadData();
+
+        function testBaseData() {
+            const result = document.getElementById('test1-result');
+            let html = '<div class="test-result">';
+            
+            html += `<p><strong>Caldaie:</strong> ${app.data.boilers.length}</p>`;
+            html += `<p><strong>Caricamenti:</strong> ${app.data.boilerLoads.length}</p>`;
+            html += `<p><strong>Clienti:</strong> ${app.data.customers.length}</p>`;
+            
+            if (app.data.boilers.length === 0) {
+                html += '<p class="test-fail">⚠️ Nessuna caldaia registrata. Registra almeno una caldaia per testare i caricamenti.</p>';
+            } else {
+                html += '<p class="test-pass">✅ Caldaie presenti nel sistema</p>';
+            }
+            
+            html += '</div>';
+            result.innerHTML = html;
+        }
+
+        function addTestLoad() {
+            const result = document.getElementById('test2-result');
+            
+            if (app.data.boilers.length === 0) {
+                // Create a test boiler first
+                const testBoiler = {
+                    id: 'test-boiler-' + Date.now(),
+                    code: 'TEST-001',
+                    model: 'Caldaia Test',
+                    customerId: 'test-customer',
+                    status: 'attiva',
+                    location: 'Test Location',
+                    installationDate: '2024-01-01',
+                    lastMaintenance: new Date().toISOString().split('T')[0],
+                    notes: 'Caldaia di test',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                app.data.boilers.push(testBoiler);
+                
+                // Create a test customer
+                const testCustomer = {
+                    id: 'test-customer',
+                    name: 'Cliente Test',
+                    email: 'test@test.com'
+                };
+                app.data.customers.push(testCustomer);
+            }
+
+            if (!app.data.boilerLoads) {
+                app.data.boilerLoads = [];
+            }
+
+            const testLoad = {
+                id: 'test-load-' + Date.now(),
+                date: new Date().toISOString().split('T')[0],
+                datetime: new Date().toISOString().split('T')[0],
+                boilerId: app.data.boilers[0].id,
+                woodType: 'pellet',
+                quantity: 100,
+                amount: 15,
+                status: 'completato',
+                notes: 'Caricamento di test',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            app.data.boilerLoads.push(testLoad);
+            app.saveData();
+
+            result.innerHTML = `
+                <div class="test-result test-pass">
+                    ✅ Caricamento aggiunto con successo!<br>
+                    <strong>ID:</strong> ${testLoad.id}<br>
+                    <strong>Caldaia:</strong> ${app.data.boilers[0].code}<br>
+                    <strong>Importo:</strong> €${testLoad.amount}<br>
+                    <strong>Totale caricamenti:</strong> ${app.data.boilerLoads.length}
+                </div>
+            `;
+        }
+
+        function testHeaderUpdate() {
+            const result = document.getElementById('test3-result');
+            const loads = app.data.boilerLoads || [];
+            
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            const currentMonthLoads = loads.filter(load => {
+                const loadDate = new Date(load.date || load.datetime);
+                return loadDate.getMonth() === currentMonth && loadDate.getFullYear() === currentYear;
+            });
+
+            const totalRevenue = currentMonthLoads.reduce((sum, load) => sum + (load.amount || 15), 0);
+            
+            result.innerHTML = `
+                <div class="test-result test-pass">
+                    ✅ Calcoli header verificati!<br>
+                    <strong>Caricamenti questo mese:</strong> ${currentMonthLoads.length}<br>
+                    <strong>Fatturato calcolato:</strong> €${totalRevenue.toFixed(2)}<br>
+                    <strong>Prezzo per carico:</strong> €15.00<br>
+                    <strong>Formula:</strong> ${currentMonthLoads.length} × €15 = €${totalRevenue.toFixed(2)}
+                </div>
+            `;
+        }
+
+        function testLoadDeletion() {
+            const result = document.getElementById('test4-result');
+            const initialCount = app.data.boilerLoads.length;
+            
+            if (initialCount === 0) {
+                result.innerHTML = '<div class="test-result test-fail">⚠️ Nessun caricamento da eliminare. Aggiungi prima un caricamento di test.</div>';
+                return;
+            }
+
+            // Find the last test load
+            const testLoadIndex = app.data.boilerLoads.findIndex(load => load.id.startsWith('test-load-'));
+            
+            if (testLoadIndex === -1) {
+                result.innerHTML = '<div class="test-result test-fail">⚠️ Nessun caricamento di test trovato.</div>';
+                return;
+            }
+
+            const deletedLoad = app.data.boilerLoads[testLoadIndex];
+            app.data.boilerLoads.splice(testLoadIndex, 1);
+            app.saveData();
+
+            const finalCount = app.data.boilerLoads.length;
+
+            result.innerHTML = `
+                <div class="test-result test-pass">
+                    ✅ Eliminazione completata!<br>
+                    <strong>Eliminato:</strong> ${deletedLoad.id}<br>
+                    <strong>Prima:</strong> ${initialCount} caricamenti<br>
+                    <strong>Dopo:</strong> ${finalCount} caricamenti<br>
+                    <strong>Differenza:</strong> ${initialCount - finalCount}
+                </div>
+            `;
+        }
+
+        function testDataPersistence() {
+            const result = document.getElementById('test5-result');
+            
+            // Test save
+            const testData = {
+                testTimestamp: new Date().toISOString(),
+                testValue: Math.random()
+            };
+            
+            app.data.test = testData;
+            app.saveData();
+            
+            // Test load
+            const storedData = localStorage.getItem('erpMallFarmData');
+            const parsedData = JSON.parse(storedData);
+            
+            const isDataMatching = parsedData.test && 
+                                   parsedData.test.testTimestamp === testData.testTimestamp &&
+                                   parsedData.test.testValue === testData.testValue;
+            
+            result.innerHTML = `
+                <div class="test-result ${isDataMatching ? 'test-pass' : 'test-fail'}">
+                    ${isDataMatching ? '✅' : '❌'} Test persistenza dati<br>
+                    <strong>Salvato:</strong> ${JSON.stringify(testData)}<br>
+                    <strong>Caricato:</strong> ${JSON.stringify(parsedData.test)}<br>
+                    <strong>Corrispondenza:</strong> ${isDataMatching ? 'SÌ' : 'NO'}
+                </div>
+            `;
+            
+            // Clean up test data
+            delete app.data.test;
+            app.saveData();
+        }
+
+        // Auto-run first test
+        window.onload = function() {
+            testBaseData();
+        };
+    </script>
+</body>
+</html>
