@@ -296,14 +296,129 @@
                 font-size: 0.75rem;
             }
         }
+
+        /* Custom Confirmation Modal Styles */
+        .confirm-modal {
+            z-index: 2000;
+        }
+        
+        .confirm-modal .modal-dialog {
+            max-width: 450px;
+            margin: 3rem auto;
+        }
+        
+        .confirm-modal .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .confirm-modal .modal-header {
+            border-bottom: none;
+            padding: 1.5rem 1.5rem 0.5rem;
+            position: relative;
+        }
+        
+        .confirm-modal .modal-body {
+            padding: 1rem 1.5rem 1.5rem;
+            text-align: center;
+        }
+        
+        .confirm-modal .modal-footer {
+            border-top: none;
+            padding: 0 1.5rem 1.5rem;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .confirm-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .confirm-icon.danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+        }
+        
+        .confirm-icon.warning {
+            background: linear-gradient(135deg, #ffd93d, #f39c12);
+            color: white;
+        }
+        
+        .confirm-icon.info {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+        }
+        
+        .confirm-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3436;
+        }
+        
+        .confirm-message {
+            font-size: 1rem;
+            color: #636e72;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+        
+        .confirm-btn {
+            padding: 0.6rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+        
+        .confirm-btn.danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+        }
+        
+        .confirm-btn.danger:hover {
+            background: linear-gradient(135deg, #ee5a52, #d63031);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(238, 90, 82, 0.4);
+        }
+        
+        .confirm-btn.secondary {
+            background: #ddd;
+            color: #636e72;
+        }
+        
+        .confirm-btn.secondary:hover {
+            background: #bbb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        .confirm-modal.fade .modal-dialog {
+            transition: transform 0.3s ease-out;
+            transform: translate(0, -50px);
+        }
+        
+        .confirm-modal.show .modal-dialog {
+            transform: none;
+        }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#" onclick="showPage('dashboard')">
-                <i class="fas fa-tree"></i> ERP MallFarm
+            <a class="navbar-brand d-flex align-items-center" href="#" onclick="showPage('dashboard')">
+                <img src="assets/MALL FARM_cropped.png" alt="Mall Farm" height="40">
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -520,7 +635,8 @@
                     boilerLoads: this.loadData('boilerLoads') || [],
                     boilerCosts: this.loadData('boilerCosts') || [],
                     productCategories: this.loadData('productCategories') || [],
-                    unitsOfMeasure: this.loadData('unitsOfMeasure') || []
+                    unitsOfMeasure: this.loadData('unitsOfMeasure') || [],
+                    deliveryNotes: this.loadData('deliveryNotes') || []
                 };
                 this.init();
             }
@@ -743,6 +859,97 @@
             }
         }
 
+        // Custom Confirmation Dialog System
+        class ConfirmationDialog {
+            static show(options = {}) {
+                return new Promise((resolve) => {
+                    const modal = document.getElementById('confirmModal');
+                    const icon = document.getElementById('confirmIcon');
+                    const title = document.getElementById('confirmTitle');
+                    const message = document.getElementById('confirmMessage');
+                    const confirmBtn = document.getElementById('confirmButton');
+                    
+                    // Configure modal appearance
+                    const type = options.type || 'danger';
+                    const iconClass = options.icon || 'fas fa-exclamation-triangle';
+                    
+                    // Update icon and styling
+                    icon.className = `confirm-icon ${type}`;
+                    icon.innerHTML = `<i class="${iconClass}"></i>`;
+                    
+                    // Update content
+                    title.textContent = options.title || 'Conferma azione';
+                    message.textContent = options.message || 'Sei sicuro di voler procedere?';
+                    
+                    // Update confirm button
+                    confirmBtn.className = `btn confirm-btn ${type}`;
+                    confirmBtn.innerHTML = `<i class="${options.confirmIcon || 'fas fa-check'} me-1"></i> ${options.confirmText || 'Conferma'}`;
+                    
+                    // Handle confirm action
+                    const handleConfirm = () => {
+                        resolve(true);
+                        bootstrap.Modal.getInstance(modal).hide();
+                        confirmBtn.removeEventListener('click', handleConfirm);
+                    };
+                    
+                    // Handle cancel/close
+                    const handleCancel = () => {
+                        resolve(false);
+                        confirmBtn.removeEventListener('click', handleConfirm);
+                    };
+                    
+                    confirmBtn.addEventListener('click', handleConfirm);
+                    modal.addEventListener('hidden.bs.modal', handleCancel, { once: true });
+                    
+                    // Show modal
+                    new bootstrap.Modal(modal).show();
+                });
+            }
+            
+            // Predefined confirmation types
+            static confirmDelete(itemName, itemType = 'elemento') {
+                return this.show({
+                    type: 'danger',
+                    icon: 'fas fa-trash-alt',
+                    title: 'Conferma Eliminazione',
+                    message: `Sei sicuro di voler eliminare ${itemType} "${itemName}"? Questa azione non può essere annullata.`,
+                    confirmText: 'Elimina',
+                    confirmIcon: 'fas fa-trash-alt'
+                });
+            }
+            
+            static confirmAction(title, message, actionText = 'Conferma') {
+                return this.show({
+                    type: 'warning',
+                    icon: 'fas fa-exclamation-circle',
+                    title: title,
+                    message: message,
+                    confirmText: actionText,
+                    confirmIcon: 'fas fa-check'
+                });
+            }
+            
+            static confirmDanger(title, message, actionText = 'Procedi') {
+                return this.show({
+                    type: 'danger',
+                    icon: 'fas fa-exclamation-triangle',
+                    title: title,
+                    message: message,
+                    confirmText: actionText,
+                    confirmIcon: 'fas fa-exclamation-triangle'
+                });
+            }
+        }
+
+        // Helper function to replace confirm() calls
+        async function customConfirm(message, title = 'Conferma', type = 'warning') {
+            return await ConfirmationDialog.show({
+                type: type,
+                title: title,
+                message: message
+            });
+        }
+
         // Page Navigation
         function showPage(pageName) {
             // Hide all pages
@@ -839,27 +1046,34 @@
                     try {
                         const importedData = JSON.parse(e.target.result);
                         
-                        if (confirm('Sei sicuro di voler importare i dati? Questo sovrascriverà tutti i dati esistenti.')) {
-                            app.data.customers = importedData.customers || [];
-                            app.data.suppliers = importedData.suppliers || [];
-                            app.data.products = importedData.products || [];
-                            app.data.orders = importedData.orders || [];
-                            app.data.inventory = importedData.inventory || [];
-                            app.data.boilerLoads = importedData.boilerLoads || [];
-                            app.data.productCategories = importedData.productCategories || [];
-                            app.data.unitsOfMeasure = importedData.unitsOfMeasure || [];
-                            
-                            // Save to localStorage
-                            Object.keys(app.data).forEach(key => {
-                                app.saveData(key, app.data[key]);
-                            });
-                            
-                            app.updateDashboard();
-                            app.showToast('Dati importati con successo', 'success');
-                            
-                            // Reload current page
-                            loadPageContent(app.currentPage);
-                        }
+                        ConfirmationDialog.confirmDanger(
+                            'Importa Dati',
+                            'Sei sicuro di voler importare i dati? Questo sovrascriverà TUTTI i dati esistenti. Questa azione non può essere annullata.',
+                            'Importa Tutto'
+                        ).then(confirmed => {
+                            if (confirmed) {
+                                app.data.customers = importedData.customers || [];
+                                app.data.suppliers = importedData.suppliers || [];
+                                app.data.products = importedData.products || [];
+                                app.data.orders = importedData.orders || [];
+                                app.data.inventory = importedData.inventory || [];
+                                app.data.boilerLoads = importedData.boilerLoads || [];
+                                app.data.productCategories = importedData.productCategories || [];
+                                app.data.unitsOfMeasure = importedData.unitsOfMeasure || [];
+                                app.data.deliveryNotes = importedData.deliveryNotes || [];
+                                
+                                // Save to localStorage
+                                Object.keys(app.data).forEach(key => {
+                                    app.saveData(key, app.data[key]);
+                                });
+                                
+                                app.updateDashboard();
+                                app.showToast('Dati importati con successo', 'success');
+                                
+                                // Reload current page
+                                loadPageContent(app.currentPage);
+                            }
+                        });
                     } catch (error) {
                         app.showToast('Errore durante l\'importazione del file', 'danger');
                         console.error('Import error:', error);
@@ -872,24 +1086,114 @@
         }
 
         function clearAllData() {
-            if (confirm('Sei sicuro di voler cancellare tutti i dati? Questa azione non può essere annullata.')) {
-                if (confirm('ATTENZIONE: Tutti i clienti, ordini, prodotti e movimenti saranno cancellati definitivamente. Continuare?')) {
-                    // Clear localStorage
-                    Object.keys(app.data).forEach(key => {
-                        localStorage.removeItem(`erp_mallfarm_${key}`);
-                        app.data[key] = [];
+            ConfirmationDialog.confirmDanger(
+                'Cancella Tutti i Dati',
+                'ATTENZIONE: Questa azione cancellerà DEFINITIVAMENTE tutti i clienti, ordini, prodotti, movimenti e dati del sistema. Questa azione NON può essere annullata.',
+                'Cancella Tutto'
+            ).then(confirmed => {
+                if (confirmed) {
+                    // Second confirmation for such destructive action
+                    ConfirmationDialog.confirmDanger(
+                        'CONFERMA FINALE',
+                        'Ultima conferma: sei ASSOLUTAMENTE sicuro di voler cancellare tutti i dati? Non potrai più recuperarli.',
+                        'SÌ, CANCELLA TUTTO'
+                    ).then(finalConfirmed => {
+                        if (finalConfirmed) {
+                            // Clear localStorage
+                            Object.keys(app.data).forEach(key => {
+                                localStorage.removeItem(`erp_mallfarm_${key}`);
+                                app.data[key] = [];
+                            });
+                            
+                            // Reinitialize with default data
+                            app.initializeDefaultData();
+                            app.updateDashboard();
+                            app.showToast('Tutti i dati sono stati cancellati', 'warning');
+                            
+                            // Reload current page
+                            loadPageContent(app.currentPage);
+                        }
                     });
-                    
-                    // Reinitialize with default data
-                    app.initializeDefaultData();
-                    app.updateDashboard();
-                    app.showToast('Tutti i dati sono stati cancellati', 'warning');
-                    
-                    // Reload current page
-                    loadPageContent(app.currentPage);
                 }
-            }
+            });
         }
+    </script>
+
+    <!-- Custom Confirmation Modal -->
+    <div class="modal fade confirm-modal" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="confirm-icon danger" id="confirmIcon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h5 class="confirm-title" id="confirmTitle">Conferma azione</h5>
+                    <p class="confirm-message" id="confirmMessage">Sei sicuro di voler procedere?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn confirm-btn secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Annulla
+                    </button>
+                    <button type="button" class="btn confirm-btn danger" id="confirmButton">
+                        <i class="fas fa-check me-1"></i> Conferma
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Logo base64 statico per garantire la visualizzazione nei PDF
+        window.LOGO_BASE64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='; // Placeholder
+        
+        // Funzione per ottenere il logo per i PDF
+        window.getLogoForPDF = function() {
+            // Prova prima il logo base64 se disponibile
+            if (window.logoBase64 && window.logoBase64.startsWith('data:')) {
+                return window.logoBase64;
+            }
+            
+            // Altrimenti usa il percorso completo assoluto
+            const fullPath = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'assets/MALL FARM_cropped.png';
+            return fullPath;
+        };
+
+        // Global function to get logo as base64 for PDF generation
+        window.getLogoBase64 = function() {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = this.width;
+                    canvas.height = this.height;
+                    ctx.drawImage(this, 0, 0);
+                    try {
+                        const dataURL = canvas.toDataURL('image/png');
+                        resolve(dataURL);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                img.onerror = reject;
+                img.src = 'assets/MALL FARM_cropped.png';
+            });
+        };
+
+        // Preload logo for immediate use
+        window.logoBase64 = null;
+        window.getLogoBase64().then(base64 => {
+            window.logoBase64 = base64;
+            console.log('Logo caricato in base64:', base64.length, 'caratteri');
+        }).catch(error => {
+            console.warn('Impossibile caricare logo in base64:', error);
+            // Fallback: usa il percorso assoluto
+            window.logoBase64 = window.getLogoForPDF();
+        });
     </script>
 
     <!-- Include page-specific JavaScript -->
@@ -897,6 +1201,7 @@
     <script src="js/suppliers.js"></script>
     <script src="js/products.js"></script>
     <script src="js/orders.js"></script>
+    <script src="js/delivery-notes.js"></script>
     <script src="js/inventory.js"></script>
     <script src="js/boiler.js"></script>
     <script src="js/accounting.js"></script>

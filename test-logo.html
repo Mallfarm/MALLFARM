@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Logo Base64</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .logo-display {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        button {
+            background: #2d5a27;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1e3b1a;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Logo Base64 - ERP MallFarm</h1>
+    
+    <div class="test-section">
+        <h2>1. Test Caricamento Logo Originale</h2>
+        <div class="logo-display">
+            <img id="originalLogo" src="assets/MALL FARM_cropped.png" alt="Logo Originale" style="max-height: 100px;">
+        </div>
+        <div id="originalStatus" class="status"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test Conversione Base64</h2>
+        <button onclick="convertLogo()">Converti Logo in Base64</button>
+        <div id="conversionStatus" class="status"></div>
+        <div class="logo-display" id="base64Display" style="display: none;">
+            <img id="base64Logo" alt="Logo Base64" style="max-height: 100px;">
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Test Stampa PDF</h2>
+        <button onclick="testPrintPDF()">Test Stampa con Logo Base64</button>
+        <div id="printStatus" class="status"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Informazioni Debug</h2>
+        <div id="debugInfo"></div>
+    </div>
+
+    <script>
+        // Global function to get logo as base64 for PDF generation
+        window.getLogoBase64 = function() {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = this.width;
+                    canvas.height = this.height;
+                    ctx.drawImage(this, 0, 0);
+                    try {
+                        const dataURL = canvas.toDataURL('image/png');
+                        resolve(dataURL);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                img.onerror = reject;
+                img.src = 'assets/MALL FARM_cropped.png';
+            });
+        };
+
+        // Preload logo for immediate use
+        window.logoBase64 = null;
+        window.getLogoBase64().then(base64 => {
+            window.logoBase64 = base64;
+            updateDebugInfo();
+        }).catch(console.error);
+
+        // Test original logo loading
+        document.getElementById('originalLogo').onload = function() {
+            document.getElementById('originalStatus').innerHTML = '<strong>✅ Logo originale caricato correttamente</strong>';
+            document.getElementById('originalStatus').className = 'status success';
+        };
+
+        document.getElementById('originalLogo').onerror = function() {
+            document.getElementById('originalStatus').innerHTML = '<strong>❌ Errore nel caricamento del logo originale</strong>';
+            document.getElementById('originalStatus').className = 'status error';
+        };
+
+        function convertLogo() {
+            const statusDiv = document.getElementById('conversionStatus');
+            statusDiv.innerHTML = '🔄 Conversione in corso...';
+            statusDiv.className = 'status';
+
+            window.getLogoBase64().then(base64 => {
+                window.logoBase64 = base64;
+                
+                // Show converted logo
+                const base64Logo = document.getElementById('base64Logo');
+                base64Logo.src = base64;
+                document.getElementById('base64Display').style.display = 'block';
+                
+                statusDiv.innerHTML = '<strong>✅ Logo convertito in Base64 con successo!</strong><br>Dimensione: ' + Math.round(base64.length / 1024) + ' KB';
+                statusDiv.className = 'status success';
+                
+                updateDebugInfo();
+            }).catch(error => {
+                statusDiv.innerHTML = '<strong>❌ Errore nella conversione: </strong>' + error.message;
+                statusDiv.className = 'status error';
+            });
+        }
+
+        function testPrintPDF() {
+            const statusDiv = document.getElementById('printStatus');
+            
+            if (!window.logoBase64) {
+                statusDiv.innerHTML = '<strong>❌ Logo Base64 non disponibile. Prova prima la conversione.</strong>';
+                statusDiv.className = 'status error';
+                return;
+            }
+
+            statusDiv.innerHTML = '🔄 Generazione PDF di test...';
+            statusDiv.className = 'status';
+
+            const logoBase64 = window.logoBase64;
+            const isBase64 = logoBase64.startsWith('data:');
+            
+            const printContent = `
+                <html>
+                    <head>
+                        <title>Test PDF Logo</title>
+                        <style>
+                            body { 
+                                font-family: Arial, sans-serif; 
+                                margin: 20px;
+                                color: #333;
+                            }
+                            .header { 
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                margin-bottom: 30px; 
+                                border-bottom: 2px solid #2d5a27;
+                                padding-bottom: 15px;
+                            }
+                            .logo-section {
+                                display: flex;
+                                align-items: center;
+                            }
+                            .logo-section img {
+                                height: 60px;
+                                margin-right: 15px;
+                            }
+                            .document-title {
+                                text-align: right;
+                                font-size: 20px;
+                                font-weight: bold;
+                                color: #333;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <div class="logo-section">
+                                <img src="${logoBase64}" alt="Mall Farm Logo" ${isBase64 ? 'style="max-width: 150px; height: auto;"' : ''}>
+                            </div>
+                            <div class="document-title">
+                                <div>TEST PDF LOGO</div>
+                                <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                                    ${new Date().toLocaleString('it-IT')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h2>Test di visualizzazione del logo nei PDF</h2>
+                        <p>Se vedi il logo nell'header di questo documento, la conversione Base64 funziona correttamente!</p>
+                        
+                        <div style="margin-top: 50px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                            <h3>Informazioni tecniche:</h3>
+                            <p><strong>Tipo logo:</strong> ${isBase64 ? 'Base64 integrato' : 'Percorso relativo'}</p>
+                            <p><strong>Dimensione:</strong> ${Math.round(logoBase64.length / 1024)} KB</p>
+                            <p><strong>Formato:</strong> ${logoBase64.substring(5, logoBase64.indexOf(';'))}</p>
+                        </div>
+                    </body>
+                </html>
+            `;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.focus();
+            
+            statusDiv.innerHTML = '<strong>✅ PDF di test generato!</strong><br>Controlla la nuova finestra per verificare che il logo sia visibile.';
+            statusDiv.className = 'status success';
+        }
+
+        function updateDebugInfo() {
+            const debugDiv = document.getElementById('debugInfo');
+            debugDiv.innerHTML = `
+                <h4>Stato Logo:</h4>
+                <ul>
+                    <li><strong>Logo Base64 caricato:</strong> ${window.logoBase64 ? '✅ Sì' : '❌ No'}</li>
+                    <li><strong>Funzione getLogoBase64:</strong> ${typeof window.getLogoBase64 === 'function' ? '✅ Disponibile' : '❌ Non disponibile'}</li>
+                    ${window.logoBase64 ? `
+                        <li><strong>Dimensione Base64:</strong> ${Math.round(window.logoBase64.length / 1024)} KB</li>
+                        <li><strong>Formato:</strong> ${window.logoBase64.substring(5, window.logoBase64.indexOf(';'))}</li>
+                        <li><strong>Primi caratteri:</strong> ${window.logoBase64.substring(0, 50)}...</li>
+                    ` : ''}
+                </ul>
+            `;
+        }
+
+        // Initial debug info update
+        updateDebugInfo();
+    </script>
+</body>
+</html>
